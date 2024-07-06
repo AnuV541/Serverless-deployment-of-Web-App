@@ -57,5 +57,45 @@ You will be able to see that the execution result for this will be:
   "body": "\"Hello from Lambda, Myra\"",
   "email": "\"email: Myra@gmail.com\""
 }
-This means that the lambda functio is working.
+This means that the lambda function is working.
 
+### Create API to connect the lambda function to the web app
+Follow the given steps:
+Go to AWS Consolve -> API -> Rest API
+![image](https://github.com/AnuV541/Serverless-deployment-of-Web-App/assets/110184106/27de3b67-c263-468b-9ef8-d377c6766a9e)
+![image](https://github.com/AnuV541/Serverless-deployment-of-Web-App/assets/110184106/c1370ff9-ee37-4c08-beb7-578a8314a111)
+![image](https://github.com/AnuV541/Serverless-deployment-of-Web-App/assets/110184106/e31a07f0-c181-4d58-b0ab-a8f2971b6567)
+![image](https://github.com/AnuV541/Serverless-deployment-of-Web-App/assets/110184106/7e512d79-ae1d-46e6-8fdf-36bf26bb80d4)
+![image](https://github.com/AnuV541/Serverless-deployment-of-Web-App/assets/110184106/7cce4f0d-9b8e-427e-948d-a94ffaa6c01d)
+Now save the given url to later check if the api is working or not. It should look something like this: https://lyjf2b904d.execute-api.ap-southeast-1.amazonaws.com/dev
+![image](https://github.com/AnuV541/Serverless-deployment-of-Web-App/assets/110184106/018ab9dd-1588-46c1-a29d-ab0faac5b358)
+Now when you test it, it should give an answer like this:
+![image](https://github.com/AnuV541/Serverless-deployment-of-Web-App/assets/110184106/6cf0226c-eb9c-48f5-969e-d419d81ccb03)
+
+### Creating Table
+
+Go to AWS ConsolE -> DynamoDB 
+![image](https://github.com/AnuV541/Serverless-deployment-of-Web-App/assets/110184106/e427586f-f1b6-4de3-bcc8-b7cbe2ca3c3e)
+In the policy section, create a new policy and add this:
+Table policy:
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "VisualEditor0",
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": "arn:aws:iam::050016925652:root"
+			},
+			"Action": [
+				"dynamodb:PutItem",
+				"dynamodb:DeleteItem",
+				"dynamodb:GetItem",
+				"dynamodb:Scan",
+				"dynamodb:Query",
+				"dynamodb:UpdateItem"
+			],
+			"Resource": "arn:aws:dynamodb:ap-southeast-1:050016925652:table/Simon_Database"
+		}
+	]
+}
