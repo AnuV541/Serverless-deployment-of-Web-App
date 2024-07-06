@@ -75,6 +75,7 @@ Now when you test it, it should give an answer like this:
 ### Creating Table
 
 Go to AWS ConsolE -> DynamoDB 
+While creating the table give it two columns- name and email
 ![image](https://github.com/AnuV541/Serverless-deployment-of-Web-App/assets/110184106/e427586f-f1b6-4de3-bcc8-b7cbe2ca3c3e)
 In the policy section, create a new policy and add this:
 Table policy:
@@ -99,3 +100,54 @@ Table policy:
 		}
 	]
 }
+
+### Testing API
+To test the API, go to the API Gateway console
+![image](https://github.com/AnuV541/Serverless-deployment-of-Web-App/assets/110184106/23f5b849-1e4c-46e6-bcf1-9221397304b9)
+![image](https://github.com/AnuV541/Serverless-deployment-of-Web-App/assets/110184106/75db5047-edef-44a5-bc6e-cb741686d19d)
+![image](https://github.com/AnuV541/Serverless-deployment-of-Web-App/assets/110184106/d4791161-56ae-49a5-8fd1-4a284615cc8b)
+Add the following code to sepecify the permession:
+Lambda code:
+# import the json utility package since we will be working with a JSON object
+import json
+# import the AWS SDK (for Python the package name is boto3)
+import boto3
+# import two packages to help us with dates and date formatting
+from time import gmtime, strftime
+
+
+# create a DynamoDB object using the AWS SDK
+dynamodb = boto3.resource('dynamodb')
+# use the DynamoDB object to select our table
+table = dynamodb.Table('Simon_Database')
+# store the current time in a human readable format in a variable
+now = strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime())
+
+
+# define the handler function that the Lambda service will use as an entry point
+def lambda_handler(event, context):
+    name = event['Name']
+    email= event['mail'] variable
+    response = table.put_item(
+        Item={
+            'Name': name,
+            'Email': email,
+            'LatestGreetingTime':now
+            })
+    return {
+        'statusCode': 200,
+        'body': json.dumps('Hello from Lambda, ' + name)
+    }
+
+When you test it, you'll be able to see this as the output:
+![image](https://github.com/AnuV541/Serverless-deployment-of-Web-App/assets/110184106/43221909-576b-4709-8ba5-3c7b9b314bc8)
+
+You will be able to see the same output in the url, which was saved before.
+
+Now , the same value from the lambda is added to th etable through the API:
+![image](https://github.com/AnuV541/Serverless-deployment-of-Web-App/assets/110184106/f43e97b1-8d3e-4012-9416-9925caa55d12)
+Now go to the same amplify and add your new updated html document with the api access given from the url copied.
+Now run your function and view the output
+![image](https://github.com/AnuV541/Serverless-deployment-of-Web-App/assets/110184106/92fb8d84-d39f-4091-bcb7-3ece3e31afb5)
+![image](https://github.com/AnuV541/Serverless-deployment-of-Web-App/assets/110184106/064547fb-1279-42f5-a29a-ccbeac3943d0)
+
